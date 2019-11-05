@@ -29,10 +29,10 @@ jobs:
     steps:
       - checkout
       - run:
-        name: flake8 tests
-        command: |
-          . venv/bin/activate
-          flake8 ./ --exclude=venv --output-file flake8-reports
+          name: flake8 tests
+          command: |
+            . venv/bin/activate
+            flake8 ./ --exclude=venv --output-file flake8-reports
       - store_artifacts:
           path: flake8-reports
           destination: flake8-reports
