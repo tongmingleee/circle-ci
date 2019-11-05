@@ -32,10 +32,15 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: flake8 tests
           command: |
             . venv/bin/activate
-            python manage.py test
+            flake8
+      - run:
+          name: bandit security test
+          command: |
+            . venv/bin/activate
+            bandit ./
       - store_artifacts:
           path: test-reports
           destination: test-reports
