@@ -18,15 +18,25 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
   test:
     docker:
       - image: circleci/python:3.7.5-node
     working_directory: ~/circle-ci
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - run:
           name: flake8 tests
           command: |
+            python3 -m venv venv
             . venv/bin/activate
             flake8 ./ --exclude=venv --output-file flake8-reports
       - store_artifacts:
@@ -35,6 +45,7 @@ jobs:
       - run:
           name: bandit security test
           command: |
+            python3 -m venv venv
             . venv/bin/activate
             bandit -r ./  --exclude venv -f txt -o bandit-securty-report.txt
       - store_artifacts:
