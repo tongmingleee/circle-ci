@@ -35,7 +35,7 @@ jobs:
           name: flake8 tests
           command: |
             . venv/bin/activate
-            flake8
+            flake8 ./
       - run:
           name: bandit security test
           command: |
