@@ -44,3 +44,11 @@ jobs:
       - store_artifacts:
           path: bandit-securty-report.txt
           destination: bandit-securty-report.txt
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
+        requires:
+          - build
