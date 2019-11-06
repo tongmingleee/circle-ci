@@ -66,6 +66,7 @@ jobs:
   deploy:
     docker:
       - image: buildpack-deps:trusty
+    resource_class: small
     steps:
       - checkout
       - run:
