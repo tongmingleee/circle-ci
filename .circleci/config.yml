@@ -53,19 +53,13 @@ jobs:
           name: code style and quality check
           command: |
             . venv/bin/activate
-            flake8 ./ --exclude=venv --output-file flake8-reports.txt
-      - store_artifacts:
-          path: flake8-reports.txt
-          destination: flake8-reports.txt
+            flake8 ./ --exclude=venv
       - run:
           # We want to generate code security report using bandit but we do not want it to fail the pipeline
           name: code security test
           command: |
             . venv/bin/activate
-            bandit -r ./  --exclude venv -f txt -o code-security-report.txt || echo ""
-      - store_artifacts:
-          path: code-security-report.txt
-          destination: code-security-report.txt
+            bandit -r ./  --exclude venv || echo ""
 workflows:
   version: 2
   build-test:
