@@ -41,7 +41,7 @@ jobs:
           name: flake8 tests
           command: |
             ls
-            flake8 ./ --exclude=venv --output-file flake8-reports
+            /usr/local/bin/flake8 ./ --exclude=venv --output-file flake8-reports
       - store_artifacts:
           path: flake8-reports
           destination: flake8-reports
