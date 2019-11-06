@@ -63,9 +63,19 @@ jobs:
           command: |
             . venv/bin/activate
             bandit -r ./  --exclude venv || echo ""
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
 workflows:
   version: 2
-  build-test:
+  build-test-deploy:
     jobs:
       - build
       - test:
@@ -74,4 +84,12 @@ workflows:
       - static_analysis:
           requires:
             - build
+      - deploy:
+          requires:
+            - build
+            - test
+            - static_analysis
+          filters:
+            branches:
+              only: master
 
