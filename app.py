@@ -2,15 +2,15 @@ from flask import Flask, Response
 import logging
 
 logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 app = Flask(__name__)
 
 
-@app.route('ping', methods=['GET'])
+@app.route("ping", methods=["GET"])
 def ping():
     return Response("pong")
 
 
-if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=False, host="0.0.0.0")

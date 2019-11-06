@@ -22,7 +22,7 @@ jobs:
           paths:
             - ./venv
           key: dependencies-{{ checksum "requirements.txt" }}
-  test:
+  static_analysis:
     docker:
       - image: circleci/python:3.7.5-node
     working_directory: ~/circle-ci
@@ -34,7 +34,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - dependencies-
       - run:
-          name: flake8 tests
+          name: code style and quality check
           command: |
             . venv/bin/activate
             flake8 ./ --exclude=venv --output-file flake8-reports.txt
@@ -42,19 +42,19 @@ jobs:
           path: flake8-reports.txt
           destination: flake8-reports.txt
       - run:
-          # We want to generate bandit security report but we do not want it to fail the pipeline
-          name: bandit security test
+          # We want to generate code security report using bandit but we do not want it to fail the pipeline
+          name: code security test
           command: |
             . venv/bin/activate
-            bandit -r ./  --exclude venv -f txt -o bandit-securty-report.txt || echo ""
+            bandit -r ./  --exclude venv -f txt -o code-security-report.txt || echo ""
       - store_artifacts:
-          path: bandit-securty-report.txt
-          destination: bandit-securty-report.txt
+          path: code-security-report.txt
+          destination: code-security-report.txt
 workflows:
   version: 2
-  build-test-and-deploy:
+  build-test:
     jobs:
       - build
-      - test:
+      - static_analysis:
           requires:
             - build
