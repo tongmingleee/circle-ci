@@ -7,13 +7,11 @@ jobs:
     steps:
       - checkout
       # Download and cache dependencies
-#      - run: sudo chown -R circleci:circleci /usr/local/bin
-#      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "requirements.txt" }}
+            - dependencies-{{ checksum "requirements.txt" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - dependencies-
       - run:
           name: install dependencies
           command: |
@@ -23,31 +21,26 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-#            - /usr/local/bin
-#            - /usr/local/lib/python3.7/site-packages
-          key: v2-dependencies-{{ checksum "requirements.txt" }}
+          key: dependencies-{{ checksum "requirements.txt" }}
   test:
     docker:
       - image: circleci/python:3.7.5-node
     working_directory: ~/circle-ci
     steps:
       - checkout
-#      - run: sudo chown -R circleci:circleci /usr/local/bin
-#      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "requirements.txt" }}
+            - dependencies-{{ checksum "requirements.txt" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - dependencies-
       - run:
           name: flake8 tests
           command: |
             . venv/bin/activate
-            which flake8
-            flake8 ./ --exclude=venv --output-file flake8-reports
+            flake8 ./ --exclude=venv --output-file flake8-reports.txt
       - store_artifacts:
-          path: flake8-reports
-          destination: flake8-reports
+          path: flake8-reports.txt
+          destination: flake8-reports.txt
       - run:
           # We want to generate bandit security report but we do not want it to fail the pipeline
           name: bandit security test
