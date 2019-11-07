@@ -8,4 +8,4 @@ urllib3<1.25.0
 flake8==3.7.9
 bandit==1.5.1
 black==19.10b0
-uWSGI==2.0.18
+gunicorn==19.9.0

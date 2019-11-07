@@ -9,10 +9,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return Response("Welcome Home")
+    return Response("welcome home boy")
 
 
-@app.route("ping", methods=["GET"])
+@app.route("/ping", methods=["GET"])
 def ping():
     return Response("pong")
 
