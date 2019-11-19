@@ -4,7 +4,6 @@ def test_list_databases(postgres_inspector):
     # these are default databases in PostgresSQL
     expected = [
         {"database_name": "postgres"},
-        {"database_name": "test"},
         {"database_name": "template1"},
         {"database_name": "template0"},
     ]
