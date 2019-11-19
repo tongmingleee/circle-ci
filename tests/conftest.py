@@ -18,7 +18,7 @@ host = "localhost"
 port = 5432
 
 
-def handler(postgres):
+def handler():
     engine = create_engine("postgresql://postgres@localhost:5432/postgres")
     conn = engine.connect()
 
@@ -33,6 +33,7 @@ def handler(postgres):
 
 @pytest.fixture(scope="module")
 def postgres_inspector():
+    handler()
     postgres_inspector = PostgresInspector(user=user, password="", host=host, port=port)
     return postgres_inspector
 
