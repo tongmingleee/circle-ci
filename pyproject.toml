@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "circle ci test"
+name = "circle-ci"
 version = "0.1.0"
 description = "This service is currently a stateless service that acts as an adapter for various data warehouses. It will not maintain any state around credentials, and will not pool connections. It exposes a set of endpoints that expect credentials to be passed with them every time, and will then open a connection and perform any warehouse specific actions needed to get the desired results."
 authors = [
