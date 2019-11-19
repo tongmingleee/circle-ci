@@ -48,7 +48,6 @@ jobs:
       - run:
           name: Run unit test
           command: |
-            . venv/bin/activate
             poetry run python -m pytest
   static_analysis:
     docker:
