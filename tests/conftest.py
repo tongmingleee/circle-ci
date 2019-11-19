@@ -1,5 +1,4 @@
 import pytest
-import testing.postgresql
 from sqlalchemy import create_engine
 
 from app import create_app
@@ -20,7 +19,7 @@ port = 5432
 
 
 def handler(postgres):
-    engine = create_engine(postgres.url(database="postgres"))
+    engine = create_engine("postgresql://postgres@localhost:5432/postgres")
     conn = engine.connect()
 
     # create some dummy data
@@ -33,18 +32,7 @@ def handler(postgres):
 
 
 @pytest.fixture(scope="module")
-def postgres():
-    postgres = testing.postgresql.PostgresqlFactory(
-        name=user, port=port, cache_initialized_db=True, on_initialized=handler
-    )
-    yield postgres
-
-    # clear cached database at end of tests
-    postgres.clear_cache()
-
-
-@pytest.fixture(scope="module")
-def postgres_inspector(postgres):
+def postgres_inspector():
     postgres_inspector = PostgresInspector(user=user, password="", host=host, port=port)
     return postgres_inspector
 

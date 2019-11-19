@@ -3,6 +3,9 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.7.5-node
+      - image: circleci/postgres:11.5
+          environment:
+            POSTGRES_USER: postgres
     resource_class: small
     working_directory: ~/circle-ci
     steps:
@@ -26,10 +29,22 @@ jobs:
   test:
     docker:
       - image: circleci/python:3.7.5-node
+      - image: circleci/postgres:11.5
+          environment:
+            POSTGRES_USER: postgres
+            POSTGRES_DB: postgres
     resource_class: small
     working_directory: ~/circle-ci
     steps:
       - checkout
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - restore_cache:
           keys:
             - dependencies-{{ checksum "requirements.txt" }}
